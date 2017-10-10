@@ -1,0 +1,3 @@
+http localhost:8080/blinds name=living_room description='Both blinds in the living room' channels:=[2,3]
+http localhost:8080/blinds name=kitchen description='Single blind in the kitchen' channels:=[1]
+http localhost:8080/blinds name=all description='All blinds in the house' channels:=[0]

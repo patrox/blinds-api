@@ -1,5 +1,6 @@
 package pl.najda.blinds.api;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -17,13 +18,18 @@ public class BlindsApiApplication extends Application<BlindsApiConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<BlindsApiConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.getObjectMapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
     }
 
     @Override
     public void run(final BlindsApiConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+        final BlindsDao blindsDao = new InMemoryBlindsDao();
+        final BlindsResource blindsResource = new BlindsResource(blindsDao);
+        final BlindsControlResource blindsControlResource = new BlindsControlResource(new RpiExecutor(), blindsDao);
+
+        environment.jersey().register(blindsResource);
+        environment.jersey().register(blindsControlResource);
     }
 
 }
