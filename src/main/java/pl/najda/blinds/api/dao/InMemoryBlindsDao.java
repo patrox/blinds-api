@@ -1,4 +1,6 @@
-package pl.najda.blinds.api;
+package pl.najda.blinds.api.dao;
+
+import pl.najda.blinds.api.model.Blind;
 
 import java.util.Collection;
 import java.util.Map;

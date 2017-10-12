@@ -1,4 +1,8 @@
-package pl.najda.blinds.api;
+package pl.najda.blinds.api.resources;
+
+import pl.najda.blinds.api.dao.BlindsDao;
+import pl.najda.blinds.api.model.Blind;
+import pl.najda.blinds.api.model.BlindCommand;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;

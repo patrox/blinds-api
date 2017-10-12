@@ -1,4 +1,4 @@
-package pl.najda.blinds.api;
+package pl.najda.blinds.api.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

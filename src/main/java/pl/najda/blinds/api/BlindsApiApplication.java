@@ -4,6 +4,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import pl.najda.blinds.api.dao.BlindsDao;
+import pl.najda.blinds.api.dao.InMemoryBlindsDao;
+import pl.najda.blinds.api.resources.BlindsControlResource;
+import pl.najda.blinds.api.resources.BlindsResource;
+import pl.najda.blinds.api.rpi.RpiExecutor;
 
 public class BlindsApiApplication extends Application<BlindsApiConfiguration> {
 
