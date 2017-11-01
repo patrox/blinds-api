@@ -33,6 +33,15 @@ public class BlindsController {
         this.currentChannel = new AtomicInteger(initialChannel);
     }
 
+    private static void pulse(GpioPinDigitalOutput pin) {
+        pin.pulse(DELAY_IN_MILLIS);
+        try {
+            Thread.sleep(DELAY_IN_MILLIS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Sleep was interrupted!", e);
+        }
+    }
+
     public int getCurrentChannel() {
         return currentChannel.get();
     }
@@ -59,11 +68,12 @@ public class BlindsController {
 
         // we are doing diff + 1 presses in order to include an additional press to wake the remote control
         for (int i = 0; i <= diff; ++i) {
-            direction.pulse(DELAY_IN_MILLIS, true);
+            pulse(direction);
+
         }
         LOG.info("Setting new channel value to: {}", currentChannel.get() + diff);
         currentChannel.getAndUpdate(currentChannel -> currentChannel + diff);
-        action.pulse(DELAY_IN_MILLIS, true);
+        pulse(action);
 
         return String.format("Executed %s on %d channel", command, channel);
     }
