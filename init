@@ -1,7 +1,10 @@
-http localhost:8080/blinds name=living_room description='Both blinds in the living room' channels:=[2,3]
-http localhost:8080/blinds name=kitchen description='Single blind in the kitchen' channels:=[1]
-http localhost:8080/blinds name=all description='All blinds in the house' channels:=[0]
+#!/bin/sh
 
-http POST localhost:8080/blinds/control/all/open
-http POST localhost:8080/blinds/control/all/close
-http POST localhost:8080/blinds/control/living_room/open
+http http://patnaj.ddns.net:8080/blinds name=living_room description='Both blinds in the living room' channels:=[2,3]
+http http://patnaj.ddns.net:8080/blinds name=kitchen description='Single blind in the kitchen' channels:=[1]
+http http://patnaj.ddns.net:8080/blinds name=study description='Single blind in the study' channels:=[7]
+http http://patnaj.ddns.net:8080/blinds name=all description='All blinds in the house' channels:=[0]
+
+#http POST localhost:8080/blinds/control/all/open
+#http POST localhost:8080/blinds/control/all/close
+#http POST localhost:8080/blinds/control/living_room/open

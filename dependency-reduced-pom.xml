@@ -124,7 +124,7 @@
   </dependencyManagement>
   <properties>
     <dropwizard.version>1.2.0</dropwizard.version>
-    <mainClass>pl.najda.blinds.api.Blinds APIApplication</mainClass>
+    <mainClass>pl.najda.blinds.api.BlindsApiApplication</mainClass>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

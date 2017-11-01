@@ -31,7 +31,7 @@ public class BlindsApiApplication extends Application<BlindsApiConfiguration> {
                     final Environment environment) {
         final BlindsDao blindsDao = new InMemoryBlindsDao();
         final BlindsResource blindsResource = new BlindsResource(blindsDao);
-        final BlindsControlResource blindsControlResource = new BlindsControlResource(new RpiExecutor(), blindsDao);
+        final BlindsControlResource blindsControlResource = new BlindsControlResource(new RpiExecutor(1), blindsDao);
 
         environment.jersey().register(blindsResource);
         environment.jersey().register(blindsControlResource);
