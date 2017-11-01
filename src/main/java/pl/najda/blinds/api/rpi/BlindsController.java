@@ -74,7 +74,7 @@ public class BlindsController {
 
         // we are doing diff + 1 presses in order to include an additional press to wake the remote control
         // FIXME: this is actually a bit error prone as if someone will quickly execute another command it will be executed on a different channel then intended
-        for (int i = 0; i <= diff; ++i) {
+        for (int i = 0; i <= Math.abs(diff); ++i) {
             pulse(direction);
 
         }
