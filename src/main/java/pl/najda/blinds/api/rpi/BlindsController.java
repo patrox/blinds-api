@@ -25,7 +25,7 @@ public class BlindsController {
     private static final GpioPinDigitalOutput DOWN = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_22, "Down", PinState.LOW);
     private static final GpioPinDigitalOutput STOP = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_21, "Stop", PinState.LOW);
 
-    private static final int DELAY_IN_MILLIS = 200;
+    private static final int DELAY_IN_MILLIS = 150;
 
     private final AtomicInteger currentChannel;
 
@@ -34,9 +34,15 @@ public class BlindsController {
     }
 
     private static void pulse(GpioPinDigitalOutput pin) {
-        pin.pulse(DELAY_IN_MILLIS);
+        pin.high();
         try {
             Thread.sleep(DELAY_IN_MILLIS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Sleep was interrupted!", e);
+        }
+        pin.low();
+        try {
+            Thread.sleep(DELAY_IN_MILLIS / 3);
         } catch (InterruptedException e) {
             throw new RuntimeException("Sleep was interrupted!", e);
         }
@@ -67,6 +73,7 @@ public class BlindsController {
         }
 
         // we are doing diff + 1 presses in order to include an additional press to wake the remote control
+        // FIXME: this is actually a bit error prone as if someone will quickly execute another command it will be executed on a different channel then intended
         for (int i = 0; i <= diff; ++i) {
             pulse(direction);
 
