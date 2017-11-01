@@ -8,7 +8,7 @@ import pl.najda.blinds.api.dao.BlindsDao;
 import pl.najda.blinds.api.dao.InMemoryBlindsDao;
 import pl.najda.blinds.api.resources.BlindsControlResource;
 import pl.najda.blinds.api.resources.BlindsResource;
-import pl.najda.blinds.api.rpi.RpiExecutor;
+import pl.najda.blinds.api.rpi.BlindsController;
 
 public class BlindsApiApplication extends Application<BlindsApiConfiguration> {
 
@@ -31,7 +31,8 @@ public class BlindsApiApplication extends Application<BlindsApiConfiguration> {
                     final Environment environment) {
         final BlindsDao blindsDao = new InMemoryBlindsDao();
         final BlindsResource blindsResource = new BlindsResource(blindsDao);
-        final BlindsControlResource blindsControlResource = new BlindsControlResource(new RpiExecutor(1), blindsDao);
+        final BlindsController blindsController = new BlindsController(1);
+        final BlindsControlResource blindsControlResource = new BlindsControlResource(blindsController, blindsDao);
 
         environment.jersey().register(blindsResource);
         environment.jersey().register(blindsControlResource);

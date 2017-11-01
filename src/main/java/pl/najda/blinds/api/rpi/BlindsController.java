@@ -5,13 +5,17 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.najda.blinds.api.model.BlindCommand;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class RpiExecutor {
+public class BlindsController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BlindsController.class);
 
     private static final GpioController GPIO = GpioFactory.getInstance();
 
@@ -23,14 +27,19 @@ public class RpiExecutor {
 
     private static final int DELAY_IN_MILLIS = 200;
 
-    private final AtomicInteger channelNumber;
+    private final AtomicInteger currentChannel;
 
-    public RpiExecutor(Integer initialChanneNumber) {
-        this.channelNumber = new AtomicInteger(initialChanneNumber);
+    public BlindsController(Integer initialChannel) {
+        this.currentChannel = new AtomicInteger(initialChannel);
+    }
+
+    public int getCurrentChannel() {
+        return currentChannel.get();
     }
 
     public String execute(Integer channel, BlindCommand command) {
-        final int diff = channel - channelNumber.get();
+        final int diff = channel - currentChannel.get();
+        LOG.info("Calculated difference is: {}", diff);
         final GpioPinDigitalOutput direction = diff > 0 ? RIGHT : LEFT;
 
         final GpioPinDigitalOutput action;
@@ -50,10 +59,11 @@ public class RpiExecutor {
 
         // we are doing diff + 1 presses in order to include an additional press to wake the remote control
         for (int i = 0; i <= diff; ++i) {
-            direction.pulse(DELAY_IN_MILLIS);
+            direction.pulse(DELAY_IN_MILLIS, true);
         }
-        channelNumber.getAndUpdate(currentChannel -> currentChannel + diff);
-        action.pulse(DELAY_IN_MILLIS);
+        LOG.info("Setting new channel value to: {}", currentChannel.get() + diff);
+        currentChannel.getAndUpdate(currentChannel -> currentChannel + diff);
+        action.pulse(DELAY_IN_MILLIS, true);
 
         return String.format("Executed %s on %d channel", command, channel);
     }
